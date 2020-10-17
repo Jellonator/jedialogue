@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/jedialogue/GraphNode.gd" type="Script" id=1]
+
+[node name="GraphNode" type="GraphNode"]
+margin_right = 128.0
+margin_bottom = 86.0
+custom_constants/separation = 4
+resizable = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color( 0, 1, 0, 1 )
+slot/0/right_enabled = false
+slot/0/right_type = 1
+slot/0/right_color = Color( 1, 0, 0, 1 )
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color( 1, 1, 1, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Data" type="VBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 112.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 0, 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 42.0
+margin_right = 112.0
+margin_bottom = 62.0
+alignment = 2
+
+[node name="Remove" type="Button" parent="Buttons"]
+margin_left = 52.0
+margin_right = 72.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 0 )
+text = "-"
+
+[node name="Add" type="Button" parent="Buttons"]
+margin_left = 76.0
+margin_right = 96.0
+margin_bottom = 20.0
+text = "+"

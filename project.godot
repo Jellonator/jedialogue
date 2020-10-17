@@ -1,0 +1,53 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Reference",
+"class": "JEDialogueGraph",
+"language": "GDScript",
+"path": "res://addons/jedialogue/JEDialogueGraph.gd"
+}, {
+"base": "Reference",
+"class": "JEDialogueNode",
+"language": "GDScript",
+"path": "res://addons/jedialogue/JEDialogueNode.gd"
+}, {
+"base": "Reference",
+"class": "JEDialogueNodeType",
+"language": "GDScript",
+"path": "res://addons/jedialogue/JEDialogueNodeType.gd"
+}, {
+"base": "Node",
+"class": "JeDialogueProject",
+"language": "GDScript",
+"path": "res://addons/jedialogue/JEDialogueProject.gd"
+} ]
+_global_script_class_icons={
+"JEDialogueGraph": "",
+"JEDialogueNode": "",
+"JEDialogueNodeType": "",
+"JeDialogueProject": ""
+}
+
+[application]
+
+config/name="Dialogue Editor"
+config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "jedialogue" )
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+environment/default_environment="res://default_env.tres"

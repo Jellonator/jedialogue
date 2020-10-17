@@ -33,9 +33,19 @@ func push_output() -> Control:
 
 func _ready():
 	set_slot(0, true, 0, Color.green, false, 1, Color.red)
-	$Buttons/Remove.disabled = true
-	$Buttons/Add.disabled = true
-	$Buttons.hide()
+	if data == null:
+		$Buttons/Remove.disabled = true
+		$Buttons/Add.disabled = true
+		$Buttons.hide()
+
+func get_output_basis() -> int:
+	return get_type().num_outputs
+
+func get_output_scale() -> int:
+	return get_type().output_scale
+
+func can_push_outputs():
+	return get_output_scale() > 0
 
 func set_data(p_data: JEDialogueNode):
 	prints("SET DATA", p_data)
@@ -48,7 +58,7 @@ func set_data(p_data: JEDialogueNode):
 		pass
 	for output in p_data.outputs:
 		var child = push_output()
-	if get_type().output_scale > 0:
+	if can_push_outputs():
 		$Buttons/Remove.disabled = false
 		$Buttons/Add.disabled = false
 		$Buttons.show()
@@ -56,11 +66,14 @@ func set_data(p_data: JEDialogueNode):
 		$Buttons/Remove.disabled = true
 		$Buttons/Add.disabled = true
 		$Buttons.hide()
+	prints("OUTPUT:", get_output_basis(), get_output_scale(), can_push_outputs(), $Buttons.visible)
 
 func init_connections():
 	for i in range(data.outputs.size()):
 		var output = data.outputs[i]
 		var name = output.node_name
+		if name == "":
+			continue
 		if not name in graph.nodes:
 			printerr("COULD NOT FIND NODE ", name)
 		else:
@@ -68,7 +81,11 @@ func init_connections():
 			graph.connect_node(self.name, i, name, 0)
 
 func _on_Add_pressed():
-	pass
+	if not can_push_outputs():
+		return
+	for i in range(get_output_scale()):
+		data.push_output(get_type())
+		var child = push_output()
 
 func _on_Remove_pressed():
 	pass # Replace with function body.

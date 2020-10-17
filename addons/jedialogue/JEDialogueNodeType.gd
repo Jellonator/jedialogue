@@ -14,41 +14,56 @@ var num_outputs: int
 # If N=3 and M=0, then O can only be 3.
 var output_scale: int
 # Types of data associated with outputs
-var output_data: Array#[OutputInfo]
+var output_data: Array#[TypeInfo]
 # Types of data associated with node
-var node_data: Array#[DataType]
+var node_data: Array#[TypeInfo]
 # Name used for extra nodes
 var output_extra_name: String
 
-class OutputInfo:
+class TypeInfo:
 	var name: String
-	var datatype: DataType
-	func _init(p_type: DataType):
-		self.name = ""
-		self.datatype = p_type
-	const JSON_NAME := "name"
-	const JSON_DATATYPE := "data"
-	static func deserialize(data: Dictionary) -> OutputInfo:
-		var ret := OutputInfo.new(DataType.deserialize(data[JSON_DATATYPE]))
-		ret.name = data[JSON_NAME]
-		return ret
-	func serialize() -> Dictionary:
-		return {
-			JSON_NAME: self.name,
-			JSON_DATATYPE: self.datatype.serialize()
-		}
-
-class DataType:
 	var typename: String
-	func _init(p_typename: String):
+	func _init(p_name: String, p_typename: String):
 		self.typename = p_typename
 	const JSON_TYPENAME := "type"
-	static func deserialize(data: Dictionary) -> DataType:
-		return DataType.new(data[JSON_TYPENAME])
+	const JSON_NAME := "name"
+	static func deserialize(data: Dictionary) -> TypeInfo:
+		return TypeInfo.new(data[JSON_NAME], data[JSON_TYPENAME])
 	func serialize() -> Dictionary:
 		return {
-			JSON_TYPENAME: self.typename
+			JSON_TYPENAME: self.typename,
+			JSON_NAME: self.name
 		}
+
+#class OutputInfo:
+#	var name: String
+#	var datatype: DataType
+#	func _init(p_type: DataType):
+#		self.name = ""
+#		self.datatype = p_type
+#	const JSON_NAME := "name"
+#	const JSON_DATATYPE := "data"
+#	static func deserialize(data: Dictionary) -> OutputInfo:
+#		var ret := OutputInfo.new(DataType.deserialize(data[JSON_DATATYPE]))
+#		ret.name = data[JSON_NAME]
+#		return ret
+#	func serialize() -> Dictionary:
+#		return {
+#			JSON_NAME: self.name,
+#			JSON_DATATYPE: self.datatype.serialize()
+#		}
+
+#class DataType:
+#	var typename: String
+#	func _init(p_typename: String):
+#		self.typename = p_typename
+#	const JSON_TYPENAME := "type"
+#	static func deserialize(data: Dictionary) -> DataType:
+#		return DataType.new(data[JSON_TYPENAME])
+#	func serialize() -> Dictionary:
+#		return {
+#			JSON_TYPENAME: self.typename
+#		}
 
 func _init(p_name: String, p_outputs: int, p_outscale):
 	self.name = p_name
@@ -69,9 +84,9 @@ static func deserialize(name: String, data: Dictionary) -> JEDialogueNodeType:
 	var ret = load("res://addons/jedialogue/JEDialogueNodeType.gd").new(
 		name, data[JSON_OUTPUTS], data[JSON_OUTSCALE])
 	for value in data[JSON_DATA_OUTPUT]:
-		ret.output_data.push_back(OutputInfo.deserialize(value))
+		ret.output_data.push_back(TypeInfo.deserialize(value))
 	for value in data[JSON_DATA_NODE]:
-		ret.node_data.push_back(DataType.deserialize(value))
+		ret.node_data.push_back(TypeInfo.deserialize(value))
 	return ret
 
 func serialize() -> Dictionary:

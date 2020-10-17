@@ -17,8 +17,10 @@ func _init():
 	self.outputs = []
 	self.data = []
 
-func push_output():
-	pass
+func push_output(typedata: JEDialogueNodeType):
+	var data = OutputData.new("")
+	for value in typedata.output_data:
+		data.data.push_back(NodeData.new(""))
 
 class NodeData:
 	var value

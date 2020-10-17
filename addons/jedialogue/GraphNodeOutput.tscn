@@ -15,3 +15,8 @@ margin_right = 96.0
 margin_bottom = 14.0
 text = "Output 1"
 align = 2
+
+[node name="Data" type="VBoxContainer" parent="."]
+margin_top = 18.0
+margin_right = 96.0
+margin_bottom = 18.0

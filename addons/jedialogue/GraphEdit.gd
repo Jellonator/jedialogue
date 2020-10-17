@@ -1,24 +1,37 @@
 tool
 extends GraphEdit
 
+const SCENE_NODE := preload("res://addons/jedialogue/GraphNode.tscn")
+
+var nodes := {}
+
 func _ready():
 	print("BEGIN")
 	add_valid_connection_type(0, 0)
 	add_valid_left_disconnect_type(0)
 	add_valid_right_disconnect_type(0)
-#	print("READY")
-#	var a = $GraphNode
-#	var b = $GraphNode2
-#	var c = $GraphNode3
-#	a.set_slot(0,
-#	true, 0, Color.red,
-#	true, 0, Color.red)
-#	b.set_slot(0,
-#	true, 0, Color.red,
-#	true, 0, Color.red)
-#	c.set_slot(0,
-#	true, 0, Color.red,
-#	true, 0, Color.red)
+
+func get_project() -> JeDialogueProject:
+	return owner.project
+
+func load_graph(data: JEDialogueGraph):
+	clear_all()
+	for node_name in data.nodes.keys():
+		var node_data = data.nodes[node_name]
+		var child = SCENE_NODE.instance()
+		child.graph = self
+		prints("CHILD", node_name, node_data)
+		child.set_data(node_data)
+		add_child(child)
+		nodes[node_name] = child
+	# handle connections
+	for node in nodes.values():
+		node.init_connections()
+
+func clear_all():
+	for child in nodes.values():
+		child.queue_free()
+	nodes.clear()
 
 func _on_GraphEdit_connection_request(from: String, from_slot: int, to: String, to_slot: int):
 	# remove existing connection(s)

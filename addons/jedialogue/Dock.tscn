@@ -52,7 +52,6 @@ __meta__ = {
 [node name="GraphEdit" type="GraphEdit" parent="VBox/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-scroll_offset = Vector2( 0, -284 )
 snap_distance = 16
 script = ExtResource( 2 )
 __meta__ = {

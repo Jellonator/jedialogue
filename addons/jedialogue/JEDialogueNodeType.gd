@@ -56,7 +56,7 @@ func _init(p_name: String, p_outputs: int, p_outscale):
 	self.output_scale = p_outscale
 	self.output_data = []
 	self.node_data = []
-	self.output_node_names = []
+#	self.output_node_names = []
 	self.output_extra_name = "Output"
 
 #const JSON_NAME := "name"
@@ -65,6 +65,7 @@ const JSON_OUTSCALE := "num_output_scale"
 const JSON_DATA_OUTPUT := "data_output"
 const JSON_DATA_NODE := "data_node"
 static func deserialize(name: String, data: Dictionary) -> JEDialogueNodeType:
+	print(name, data)
 	var ret = load("res://addons/jedialogue/JEDialogueNodeType.gd").new(
 		name, data[JSON_OUTPUTS], data[JSON_OUTSCALE])
 	for value in data[JSON_DATA_OUTPUT]:

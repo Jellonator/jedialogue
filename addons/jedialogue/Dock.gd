@@ -1,40 +1,41 @@
 tool
 extends Control
 
-onready var node_graph := $Panel/GraphEdit as GraphEdit
+var project: JeDialogueProject
+var graph: JEDialogueGraph
+
+onready var node_graph := $VBox/Panel/GraphEdit as GraphEdit
+
+func load_project(data: Dictionary):
+	var newproject := JeDialogueProject.deserialize(data)
+	if newproject == null:
+		printerr("COULD NOT LOAD PROJECT")
+		return
+	project = newproject
+	# Clear graph
+	graph = JEDialogueGraph.new()
+	node_graph.clear_all()
+
+func load_file(data: Dictionary):
+	var newfile := JEDialogueGraph.deserialize(data)
+	if newfile == null:
+		printerr("COULD NOT LOAD FILE")
+		return
+	graph = newfile
+	node_graph.load_graph(graph)
 
 func _ready():
-	pass
+#	pass
+	print("LOADING PROJECT")
+	var project_file := File.new()
+	project_file.open("/home/jellonator/Workspace/RealWork/Haru/haruweb/src/projectdata.json", File.READ)
+	var project_data = JSON.parse(project_file.get_as_text()).result
+	load_project(project_data)
+	print("LOADING GRAPH")
+	var graph_file := File.new()
+	graph_file.open("/home/jellonator/Workspace/RealWork/Haru/haruweb/src/game.json", File.READ)
+	var graph_data = JSON.parse(graph_file.get_as_text()).result
+	load_file(graph_data)
 
-# Scroll the view by 'amount' increments
-#func scroll(amount: int, pos: Vector2):
-#	var pos_before := (pos - scroll_amount) / TILE_SIZE
-#	tile_size_i = int(clamp(tile_size_i + amount, 0, TILE_SIZE_ARRAY.size()-1))
-#	TILE_SIZE = TILE_SIZE_ARRAY[tile_size_i]
-#	var pos_after := (pos - scroll_amount) / TILE_SIZE
-#	scroll_amount += (pos_after - pos_before) * TILE_SIZE
-#	node_canvas.update()
-#
-#var is_scrolling := false
 func _on_Panel_gui_input(event: InputEvent):
 	pass
-#	if event is InputEventMouseMotion:
-#		if is_scrolling:
-#			scroll_amount += event.relative
-#			node_canvas.update()
-#	elif event is InputEventMouseButton:
-#		if event.button_index == BUTTON_LEFT:
-#			pass
-#		elif event.button_index == BUTTON_MIDDLE:
-#			is_scrolling = event.pressed
-#		elif event.button_index == BUTTON_RIGHT and event.pressed:
-##			var pos = pos_to_key(event.position)
-##			add_active_tile(pos, true)
-##			show_popup(event.global_position)
-#			accept_event()
-#		elif event.button_index == BUTTON_WHEEL_UP and event.pressed:
-#			scroll(1, event.position)
-#			accept_event()
-#		elif event.button_index == BUTTON_WHEEL_DOWN and event.pressed:
-#			scroll(-1, event.position)
-#			accept_event()

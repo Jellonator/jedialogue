@@ -13,7 +13,7 @@ func _init():
 	self.name = ""
 	self.datatype = ""
 	self.position = Vector2.ZERO
-	self.size = Vector2(128, 64)
+	self.size = Vector2(128, 128)
 	self.outputs = []
 	self.data = []
 
@@ -40,7 +40,7 @@ class OutputData:
 	static func deserialize(data: Dictionary) -> OutputData:
 		var ret := OutputData.new(data[JSON_NODE_NAME])
 		for value in data[JSON_DATA]:
-			ret.data.push_back(NodeData.derialize(value))
+			ret.data.push_back(NodeData.deserialize(value))
 		return ret
 	func serialize() -> Dictionary:
 		var data_array := []
@@ -76,7 +76,7 @@ static func deserialize(name: String, data: Dictionary) -> JEDialogueNode:
 	for value in data[JSON_OUTPUTS]:
 		ret.outputs.push_back(OutputData.deserialize(value))
 	for value in data[JSON_DATA]:
-		ret.data.push_back(NodeData.derialize(value))
+		ret.data.push_back(NodeData.deserialize(value))
 	return ret
 
 func serialize() -> Dictionary:

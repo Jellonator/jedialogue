@@ -39,11 +39,8 @@ _global_script_class_icons={
 [application]
 
 config/name="Dialogue Editor"
+run/main_scene="res://addons/jedialogue/Dock.tscn"
 config/icon="res://icon.png"
-
-[editor_plugins]
-
-enabled=PoolStringArray( "jedialogue" )
 
 [rendering]
 

@@ -19,6 +19,12 @@ slot/1/left_color = Color( 1, 1, 1, 1 )
 slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color( 1, 1, 1, 1 )
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color( 1, 1, 1, 1 )
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -34,11 +40,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Buttons" type="HBoxContainer" parent="."]
+[node name="Control" type="Control" parent="."]
 margin_left = 16.0
 margin_top = 42.0
 margin_right = 112.0
-margin_bottom = 62.0
+margin_bottom = 42.0
+size_flags_vertical = 3
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 46.0
+margin_right = 112.0
+margin_bottom = 66.0
 alignment = 2
 
 [node name="Remove" type="Button" parent="Buttons"]

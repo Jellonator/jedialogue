@@ -21,6 +21,7 @@ func push_output(typedata: JEDialogueNodeType):
 	var data = OutputData.new("")
 	for value in typedata.output_data:
 		data.data.push_back(NodeData.new(""))
+	self.outputs.push_back(data)
 
 class NodeData:
 	var value

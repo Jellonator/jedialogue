@@ -3,6 +3,7 @@ extends GraphNode
 
 var data: JEDialogueNode
 var graph: GraphEdit
+var outputs := []
 
 func get_project() -> JeDialogueProject:
 	return graph.get_project()
@@ -29,14 +30,27 @@ func push_output() -> Control:
 	move_child(scene, idx)
 	set_slot(idx, false, 1, Color.green, true, 0, Color.green)
 	prints("ADDING OUTPUT", get_child_count(), get_children())
+	outputs.push_back(scene)
 	return scene
+
+func refresh():
+	if can_push_outputs():
+		$Buttons/Add.disabled = false
+		$Buttons/Add.show()
+	else:
+		$Buttons/Add.disabled = true
+		$Buttons/Add.hide()
+	if can_remove_outputs():
+		$Buttons/Remove.disabled = false
+		$Buttons/Remove.show()
+	else:
+		$Buttons/Remove.disabled = true
+		$Buttons/Remove.hide()
+	prints("NUM:", get_num_outputs())
 
 func _ready():
 	set_slot(0, true, 0, Color.green, false, 1, Color.red)
-	if data == null:
-		$Buttons/Remove.disabled = true
-		$Buttons/Add.disabled = true
-		$Buttons.hide()
+	refresh()
 
 func get_output_basis() -> int:
 	return get_type().num_outputs
@@ -46,6 +60,9 @@ func get_output_scale() -> int:
 
 func can_push_outputs():
 	return get_output_scale() > 0
+
+func can_remove_outputs():
+	return get_num_outputs() > get_output_basis()
 
 func set_data(p_data: JEDialogueNode):
 	prints("SET DATA", p_data)
@@ -58,15 +75,7 @@ func set_data(p_data: JEDialogueNode):
 		pass
 	for output in p_data.outputs:
 		var child = push_output()
-	if can_push_outputs():
-		$Buttons/Remove.disabled = false
-		$Buttons/Add.disabled = false
-		$Buttons.show()
-	else:
-		$Buttons/Remove.disabled = true
-		$Buttons/Add.disabled = true
-		$Buttons.hide()
-	prints("OUTPUT:", get_output_basis(), get_output_scale(), can_push_outputs(), $Buttons.visible)
+	refresh()
 
 func init_connections():
 	for i in range(data.outputs.size()):
@@ -86,6 +95,13 @@ func _on_Add_pressed():
 	for i in range(get_output_scale()):
 		data.push_output(get_type())
 		var child = push_output()
+	refresh()
 
 func _on_Remove_pressed():
-	pass # Replace with function body.
+	if not can_remove_outputs():
+		return
+	for i in range(get_output_scale()):
+		data.outputs.pop_back()
+		outputs.back().queue_free()
+		outputs.pop_back()
+	refresh()

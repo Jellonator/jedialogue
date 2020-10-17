@@ -22,6 +22,9 @@ func get_input_slot() -> int:
 func get_output_slot(idx: int) -> int:
 	return idx + 1
 
+func get_output_target(idx: int) -> String:
+	return data.outputs[idx].node_name
+
 func push_output() -> Control:
 	var scene = OUTPUT_SCENE.instance()
 #	add_child_below_node(scene, get_child(get_num_outputs()))
@@ -101,7 +104,15 @@ func _on_Remove_pressed():
 	if not can_remove_outputs():
 		return
 	for i in range(get_output_scale()):
+		var idx = outputs.size() - 1
+		set_slot(idx+1, false, 1, Color.green, false, 0, Color.green)
+		if get_output_target(idx) != "":
+			graph.disconnect_node(self.name, idx, get_output_target(idx), 0)
 		data.outputs.pop_back()
 		outputs.back().queue_free()
 		outputs.pop_back()
 	refresh()
+
+func set_connection(idx: int, name: String):
+	data.outputs[idx].node_name = name
+	prints("CONNECTION", idx, name)

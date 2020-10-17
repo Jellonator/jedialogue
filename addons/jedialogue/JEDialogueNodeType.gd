@@ -35,36 +35,6 @@ class TypeInfo:
 			JSON_NAME: self.name
 		}
 
-#class OutputInfo:
-#	var name: String
-#	var datatype: DataType
-#	func _init(p_type: DataType):
-#		self.name = ""
-#		self.datatype = p_type
-#	const JSON_NAME := "name"
-#	const JSON_DATATYPE := "data"
-#	static func deserialize(data: Dictionary) -> OutputInfo:
-#		var ret := OutputInfo.new(DataType.deserialize(data[JSON_DATATYPE]))
-#		ret.name = data[JSON_NAME]
-#		return ret
-#	func serialize() -> Dictionary:
-#		return {
-#			JSON_NAME: self.name,
-#			JSON_DATATYPE: self.datatype.serialize()
-#		}
-
-#class DataType:
-#	var typename: String
-#	func _init(p_typename: String):
-#		self.typename = p_typename
-#	const JSON_TYPENAME := "type"
-#	static func deserialize(data: Dictionary) -> DataType:
-#		return DataType.new(data[JSON_TYPENAME])
-#	func serialize() -> Dictionary:
-#		return {
-#			JSON_TYPENAME: self.typename
-#		}
-
 func _init(p_name: String, p_outputs: int, p_outscale):
 	self.name = p_name
 	self.num_outputs = p_outputs

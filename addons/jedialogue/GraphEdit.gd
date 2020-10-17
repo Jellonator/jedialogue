@@ -39,7 +39,10 @@ func _on_GraphEdit_connection_request(from: String, from_slot: int, to: String, 
 	for connection in get_connection_list():
 		if connection["from"] == from and connection["from_port"] == from_slot:
 			disconnect_node(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+			nodes[connection["from"]].set_connection(connection["from_port"], "")
 	connect_node(from, from_slot, to, to_slot)
+	nodes[from].set_connection(from_slot, to)
 
 func _on_GraphEdit_disconnection_request(from: String, from_slot: int, to: String, to_slot: int):
 	disconnect_node(from, from_slot, to, to_slot)
+	nodes[from].set_connection(from_slot, "")

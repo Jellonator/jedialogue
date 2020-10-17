@@ -2,8 +2,13 @@ tool
 extends GraphNode
 
 var data: JEDialogueNode
-var project: JeDialogueProject
 var graph: GraphEdit
+
+func get_project() -> JeDialogueProject:
+	return graph.get_project()
+
+func get_type() -> JEDialogueNodeType:
+	return get_project().datatypes[self.data.datatype]
 
 const OUTPUT_SCENE := preload("res://addons/jedialogue/GraphNodeOutput.tscn")
 
@@ -28,18 +33,29 @@ func push_output() -> Control:
 
 func _ready():
 	set_slot(0, true, 0, Color.green, false, 1, Color.red)
+	$Buttons/Remove.disabled = true
+	$Buttons/Add.disabled = true
+	$Buttons.hide()
 
 func set_data(p_data: JEDialogueNode):
 	prints("SET DATA", p_data)
 	data = p_data
 	self.name = data.name
-	self.title = data.name
+	self.title = data.name + ": " + get_type().name
 	self.rect_position = data.position
 	self.rect_size = data.size
 	for data in p_data.data:
 		pass
 	for output in p_data.outputs:
 		var child = push_output()
+	if get_type().output_scale > 0:
+		$Buttons/Remove.disabled = false
+		$Buttons/Add.disabled = false
+		$Buttons.show()
+	else:
+		$Buttons/Remove.disabled = true
+		$Buttons/Add.disabled = true
+		$Buttons.hide()
 
 func init_connections():
 	for i in range(data.outputs.size()):
@@ -50,3 +66,9 @@ func init_connections():
 		else:
 			print("CONNECT ", i)
 			graph.connect_node(self.name, i, name, 0)
+
+func _on_Add_pressed():
+	pass
+
+func _on_Remove_pressed():
+	pass # Replace with function body.

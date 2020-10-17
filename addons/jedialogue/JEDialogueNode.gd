@@ -17,6 +17,9 @@ func _init():
 	self.outputs = []
 	self.data = []
 
+func push_output():
+	pass
+
 class NodeData:
 	var value
 	func _init(p_value):

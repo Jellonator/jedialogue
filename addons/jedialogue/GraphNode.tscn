@@ -53,3 +53,5 @@ margin_left = 76.0
 margin_right = 96.0
 margin_bottom = 20.0
 text = "+"
+[connection signal="pressed" from="Buttons/Remove" to="." method="_on_Remove_pressed"]
+[connection signal="pressed" from="Buttons/Add" to="." method="_on_Add_pressed"]

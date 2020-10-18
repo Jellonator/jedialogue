@@ -42,6 +42,10 @@ config/name="Dialogue Editor"
 run/main_scene="res://addons/jedialogue/Dock.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+JeDialogueTypeServer="*res://addons/jedialogue/JEDialogueTypeServer.gd"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

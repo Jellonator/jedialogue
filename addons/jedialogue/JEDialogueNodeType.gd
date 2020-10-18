@@ -71,3 +71,27 @@ func serialize() -> Dictionary:
 	for value in self.node_data:
 		ret[JSON_DATA_NODE].push_back(value.serialize())
 	return ret
+
+func verify() -> bool:
+	var ret := true
+	if num_outputs < 0:
+		ret = false
+		printerr("Node type %s has %d outputs (should be >= 0)" % [name, num_outputs])
+	if output_scale < 0:
+		ret = false
+		printerr("Node type %s has %d output scale (should be >= 0)" % [name, output_scale])
+	for i in range(node_data.size()):
+		var info := node_data[i] as TypeInfo
+		if not JeDialogueTypeServer.has_type(info.typename):
+			ret = false
+			printerr("In node type %s: data %d has unknown type '%s'" % [
+				name, i, info.typename
+			])
+	for i in range(output_data.size()):
+		var info := output_data[i] as TypeInfo
+		if not JeDialogueTypeServer.has_type(info.typename):
+			ret = false
+			printerr("In node type %s: output data %d has unknown type '%s'" % [
+				name, i, info.typename
+			])
+	return ret

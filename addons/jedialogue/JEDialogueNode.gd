@@ -17,12 +17,29 @@ func _init():
 	self.outputs = []
 	self.data = []
 
+# Construct a new empty node based on the given type
+static func construct_empty(name: String, typedata: JEDialogueNodeType) -> JEDialogueNode:
+	var ret = load("res://addons/jedialogue/JEDialogueNode.gd").new()
+	ret.name = name
+	ret.datatype = typedata.name
+	for i in range(typedata.node_data.size()):
+		ret.data.push_back(NodeData.new(""))
+	for i in range(typedata.num_outputs):
+		var output = OutputData.new("")
+		for j in range(typedata.output_data.size()):
+			output.data.push_back(NodeData.new(""))
+	return ret
+
+# Add a single (ONLY ONE) output to this node.
+# The caller is expected to properly handle output numbers.
+# If output scale is 0, you probably do not want to call this function.
 func push_output(typedata: JEDialogueNodeType):
 	var data = OutputData.new("")
 	for value in typedata.output_data:
 		data.data.push_back(NodeData.new(""))
 	self.outputs.push_back(data)
 
+# Represent's a single data value that can be serialized
 class NodeData:
 	var value
 	func _init(p_value):
@@ -35,6 +52,7 @@ class NodeData:
 			JSON_VALUE: self.value
 		}
 
+# Represents an output's data, including the output's target and its metadata
 class OutputData:
 	var node_name: String
 	var data: Array#[NodeData]
@@ -102,3 +120,29 @@ func serialize() -> Dictionary:
 		JSON_OUTPUTS: output_arr,
 		JSON_DATA: data_arr
 	}
+
+func verify(project: JeDialogueProject) -> bool:
+	var ret := true
+	if not project.has_type(self.datatype):
+		ret = false
+		printerr("Node %s has unknown type '%s'" % [name, datatype])
+	var typedata := project.get_type(datatype)
+	if typedata.output_scale == 0:
+		if outputs.size() != typedata.num_outputs:
+			ret = false
+			printerr("Nodes of type '%s' must have %d outputs, node %s has %d instead." % [
+				datatype, typedata.num_outputs, name, outputs.size()
+			])
+	else:
+		if outputs.size() < typedata.num_outputs:
+			ret = false
+			printerr("Nodes of type '%s' must have at least %d outputs, node %s has %d instead." % [
+				datatype, typedata.num_outputs, name, outputs.size()
+			])
+		elif (outputs.size() - typedata.num_outputs) % typedata.output_scale != 0:
+			ret = false
+			printerr("Nodes of type '%s' must have %d+%dN outputs, node %s has %d instead." % [
+				datatype, typedata.num_outputs, typedata.output_scale, name, outputs.size()
+			])
+	# TODO: Verify OUTPUTS and DATA
+	return ret

@@ -9,6 +9,21 @@ var size: Vector2
 var outputs: Array#[OutputData]
 var data: Array#[NodeData]
 
+func set_data_value(index: int, value):
+	get_data(index).value = value
+
+func get_num_outputs() -> int:
+	return outputs.size()
+
+func get_data(index: int) -> NodeData:
+	return data[index]
+
+func get_output(index: int) -> OutputData:
+	return outputs[index]
+
+func set_output_value(output: int, index: int, value):
+	get_output(output).get_data(index).value = value
+
 func _init():
 	self.name = ""
 	self.datatype = ""
@@ -61,6 +76,8 @@ class OutputData:
 		self.data = []
 	const JSON_NODE_NAME := "node_name"
 	const JSON_DATA := "data"
+	func get_data(index: int) -> NodeData:
+		return self.data[index]
 	static func deserialize(data: Dictionary) -> OutputData:
 		var ret := OutputData.new(data[JSON_NODE_NAME])
 		for value in data[JSON_DATA]:

@@ -20,11 +20,21 @@ var node_data: Array#[TypeInfo]
 # Name used for extra nodes
 var output_extra_name: String
 
+func get_output_type_info(index: int) -> TypeInfo:
+	return output_data[index]
+
+func get_data_type_info(index: int) -> TypeInfo:
+	return node_data[index]
+
+func get_num_data() -> int:
+	return node_data.size()
+
 class TypeInfo:
 	var name: String
 	var typename: String
 	func _init(p_name: String, p_typename: String):
 		self.typename = p_typename
+		self.name = p_name
 	const JSON_TYPENAME := "type"
 	const JSON_NAME := "name"
 	static func deserialize(data: Dictionary) -> TypeInfo:

@@ -24,34 +24,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Data" type="VBoxContainer" parent="."]
+[node name="Data" type="GridContainer" parent="."]
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 112.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 0, 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+size_flags_vertical = 3
+columns = 2
 
 [node name="Buttons" type="HBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 42.0
 margin_right = 112.0
-margin_bottom = 62.0
-alignment = 2
+margin_bottom = 42.0
+mouse_filter = 2
 
 [node name="Remove" type="Button" parent="Buttons"]
+visible = false
 margin_left = 52.0
 margin_right = 72.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 20, 0 )
+disabled = true
 text = "-"
 
 [node name="Add" type="Button" parent="Buttons"]
+visible = false
 margin_left = 76.0
 margin_right = 96.0
 margin_bottom = 20.0
+disabled = true
 text = "+"
+[connection signal="dragged" from="." to="." method="_on_GraphNode_dragged"]
+[connection signal="resize_request" from="." to="." method="_on_GraphNode_resize_request"]
 [connection signal="pressed" from="Buttons/Remove" to="." method="_on_Remove_pressed"]
 [connection signal="pressed" from="Buttons/Add" to="." method="_on_Add_pressed"]

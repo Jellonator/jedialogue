@@ -7,9 +7,9 @@ var nodes := {}
 
 func _ready():
 	print("BEGIN")
-	add_valid_connection_type(0, 0)
-	add_valid_left_disconnect_type(0)
-	add_valid_right_disconnect_type(0)
+#	add_valid_connection_type(0, 0)
+#	add_valid_left_disconnect_type(0)
+#	add_valid_right_disconnect_type(0)
 
 func get_project() -> JeDialogueProject:
 	return owner.project
@@ -21,8 +21,8 @@ func load_graph(data: JEDialogueGraph):
 		var child = SCENE_NODE.instance()
 		child.graph = self
 		prints("CHILD", node_name, node_data)
-		child.set_data(node_data)
 		add_child(child)
+		child.set_data(node_data)
 		nodes[node_name] = child
 	# handle connections
 	for node in nodes.values():

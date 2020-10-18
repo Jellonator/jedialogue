@@ -5,6 +5,8 @@ var data: JEDialogueNode
 var graph: GraphEdit
 var outputs := []
 
+onready var node_data := $Data
+
 func get_project() -> JeDialogueProject:
 	return graph.get_project()
 
@@ -53,7 +55,8 @@ func refresh():
 
 func _ready():
 	set_slot(0, true, 0, Color.green, false, 1, Color.red)
-	refresh()
+#	refresh()
+	self.resizable = true
 
 func get_output_basis() -> int:
 	return get_type().num_outputs
@@ -70,12 +73,21 @@ func can_remove_outputs():
 func set_data(p_data: JEDialogueNode):
 	prints("SET DATA", p_data)
 	data = p_data
+	var typedata := get_type()
 	self.name = data.name
 	self.title = data.name + ": " + get_type().name
 	self.rect_position = data.position
 	self.rect_size = data.size
-	for data in p_data.data:
-		pass
+	for i in p_data.data.size():
+		var typeinfo := typedata.get_data_type_info(i)
+#		var dialoguetype = JeDialogueTypeServer.get_type(typeinfo.typename)
+		var label := Label.new()
+		label.text = typeinfo.name
+		var editor := JeDialogueTypeServer.instance_editor(typeinfo.typename)
+		node_data.add_child(label)
+		node_data.add_child(editor)
+		editor.set_type_value(p_data.data[i].value)
+		editor.connect("on_type_value_changed", self, "_on_data_value_set", [i])
 	for output in p_data.outputs:
 		var child = push_output()
 	refresh()
@@ -116,3 +128,17 @@ func _on_Remove_pressed():
 func set_connection(idx: int, name: String):
 	data.outputs[idx].node_name = name
 	prints("CONNECTION", idx, name)
+
+func _on_GraphNode_resize_request(new_minsize):
+	self.rect_size = new_minsize
+	data.size = new_minsize
+
+func _on_GraphNode_dragged(from, to):
+	data.position = to
+
+func _on_data_value_set(value, index: int):
+	data.set_data_value(index, value)
+	prints("Set", index, "to", value)
+
+func _on_output_value_set(value, output: int, index: int):
+	data.set_output_value(output, index, value)

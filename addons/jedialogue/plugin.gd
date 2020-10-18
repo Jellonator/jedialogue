@@ -7,6 +7,7 @@ func _enter_tree():
 	print("ENTER")
 	dock = preload("res://addons/jedialogue/Dock.tscn").instance()
 	add_control_to_bottom_panel(dock, "Dialogue Editor")
+	yield(get_tree(), "idle_frame")
 	dock.initialize()
 #	add_control_to_dock(EditorPlugin.DOCK_SLOT_LEFT_BL, dock)
 

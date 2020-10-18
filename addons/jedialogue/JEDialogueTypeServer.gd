@@ -69,6 +69,7 @@ func verify_type(name: String, value) -> bool:
 	return expected_type == actual_type
 
 func _ready():
-	print("WOW")
 	register_type("string", DialogueType.new(TYPE_STRING, "", 
 		preload("res://addons/jedialogue/TypeEditors/StringEdit.tscn")))
+	register_type("text", DialogueType.new(TYPE_STRING, "", 
+		preload("res://addons/jedialogue/TypeEditors/TextEdit.tscn")))

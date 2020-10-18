@@ -5,11 +5,13 @@ const SCENE_NODE := preload("res://addons/jedialogue/GraphNode.tscn")
 
 var nodes := {}
 
+signal show_menu()
+
 func _ready():
 	print("BEGIN")
-#	add_valid_connection_type(0, 0)
-#	add_valid_left_disconnect_type(0)
-#	add_valid_right_disconnect_type(0)
+	add_valid_connection_type(0, 0)
+	add_valid_left_disconnect_type(0)
+	add_valid_right_disconnect_type(0)
 
 func get_project() -> JeDialogueProject:
 	return owner.project
@@ -29,6 +31,7 @@ func load_graph(data: JEDialogueGraph):
 		node.init_connections()
 
 func clear_all():
+	clear_connections()
 	for child in nodes.values():
 		child.queue_free()
 	nodes.clear()
@@ -46,3 +49,8 @@ func _on_GraphEdit_connection_request(from: String, from_slot: int, to: String, 
 func _on_GraphEdit_disconnection_request(from: String, from_slot: int, to: String, to_slot: int):
 	disconnect_node(from, from_slot, to, to_slot)
 	nodes[from].set_connection(from_slot, "")
+
+func _on_GraphEdit_gui_input(event: InputEvent):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_RIGHT and event.pressed:
+			emit_signal("show_menu")

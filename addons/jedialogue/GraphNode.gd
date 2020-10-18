@@ -29,13 +29,23 @@ func get_output_target(idx: int) -> String:
 
 func push_output() -> Control:
 	var scene = OUTPUT_SCENE.instance()
+	var nodetype := get_type()
 #	add_child_below_node(scene, get_child(get_num_outputs()))
 	var idx := get_child_count()-1
 	add_child(scene)
 	move_child(scene, idx)
 	set_slot(idx, false, 1, Color.green, true, 0, Color.green)
-	prints("ADDING OUTPUT", get_child_count(), get_children())
+	prints("ADDING OUTPUT", get_child_count(), idx)
 	outputs.push_back(scene)
+	scene.set_label(nodetype.output_extra_name + " " + str(idx))
+	var output_index := idx - 1
+	for i in range(nodetype.get_num_output_data()):
+		var typeinfo := nodetype.get_output_type_info(i)
+		var editor := JeDialogueTypeServer.instance_editor(typeinfo.typename)
+		scene.add_data(typeinfo.name, editor)
+		editor.set_type_value(data.get_output(output_index).get_data(i).value)
+		editor.connect("on_type_value_changed", self, "_on_data_value_set", [
+			output_index, i])
 	return scene
 
 func refresh():

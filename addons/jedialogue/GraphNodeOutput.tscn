@@ -2,21 +2,25 @@
 
 [ext_resource path="res://addons/jedialogue/GraphNodeOutput.gd" type="Script" id=1]
 
-[node name="Output" type="VBoxContainer"]
+[node name="Output" type="PanelContainer"]
 margin_right = 96.0
-margin_bottom = 14.0
+margin_bottom = 32.0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Label" type="Label" parent="."]
-margin_right = 96.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 89.0
+margin_bottom = 25.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 82.0
 margin_bottom = 14.0
 text = "Output 1"
 align = 2
 
-[node name="Data" type="VBoxContainer" parent="."]
+[node name="Data" type="GridContainer" parent="VBoxContainer"]
 margin_top = 18.0
-margin_right = 96.0
+margin_right = 82.0
 margin_bottom = 18.0
+columns = 2

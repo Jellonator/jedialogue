@@ -2,11 +2,14 @@ tool
 extends Control
 
 const MENU_PROJECT_OPEN := 0
+
 const MENU_FILE_NEW := 0
 const MENU_FILE_OPEN := 1
 const MENU_FILE_SAVE := 2
 const MENU_FILE_SAVE_AS := 3
 const MENU_FILE_CLOSE := 4
+
+const MENU_EDIT_CREATE := 0
 
 var project: JeDialogueProject
 var graph: JEDialogueGraph
@@ -14,6 +17,9 @@ var graph: JEDialogueGraph
 onready var node_graph := $VBox/Panel/GraphEdit as GraphEdit
 onready var node_menu_project := $VBox/HBox/MenuProject as MenuButton
 onready var node_menu_file := $VBox/HBox/MenuFile as MenuButton
+onready var node_menu_edit := $VBox/HBox/MenuEdit as MenuButton
+onready var node_right_click_menu := $RightClickMenu as PopupMenu
+onready var node_create_node_dialogue := $CreateNodeDialogue as ConfirmationDialog
 
 func load_project(data: Dictionary):
 	var newproject := JeDialogueProject.deserialize(data)
@@ -40,6 +46,7 @@ func _ready():
 func initialize():
 	node_menu_project.get_popup().connect("id_pressed", self, "_on_menu_project_pressed")
 	node_menu_file.get_popup().connect("id_pressed", self, "_on_menu_file_pressed")
+	node_menu_edit.get_popup().connect("id_pressed", self, "_on_menu_edit_pressed")
 	print("LOADING PROJECT")
 	var project_file := File.new()
 	project_file.open("/home/jellonator/Workspace/RealWork/Haru/haruweb/src/projectdata.json", File.READ)
@@ -58,15 +65,34 @@ func _on_menu_project_pressed(id: int):
 		_:
 			pass
 
+func do_file_new():
+	graph = JEDialogueGraph.new()
+	node_graph.clear_all()
+
+func do_file_open():
+	pass
+
+func do_file_save_as():
+	pass
+
 func _on_menu_file_pressed(id: int):
 	match id:
 		MENU_FILE_NEW:
-			pass
+			do_file_new()
 		MENU_FILE_OPEN:
-			pass
+			do_file_open()
 		MENU_FILE_SAVE:
-			pass
+			do_file_save_as()
 		MENU_FILE_SAVE_AS:
-			pass
+			do_file_save_as()
 		MENU_FILE_CLOSE:
 			pass
+
+func _on_menu_edit_pressed(id: int):
+	match id:
+		MENU_EDIT_CREATE:
+			pass
+
+func _on_GraphEdit_show_menu():
+	var pos := get_local_mouse_position() - Vector2.ONE * 8
+	node_right_click_menu.popup(Rect2(pos, Vector2.ONE))

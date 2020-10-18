@@ -29,6 +29,9 @@ func get_data_type_info(index: int) -> TypeInfo:
 func get_num_data() -> int:
 	return node_data.size()
 
+func get_num_output_data() -> int:
+	return output_data.size()
+
 class TypeInfo:
 	var name: String
 	var typename: String

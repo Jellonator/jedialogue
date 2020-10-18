@@ -43,6 +43,7 @@ static func construct_empty(name: String, typedata: JEDialogueNodeType) -> JEDia
 		var output = OutputData.new("")
 		for j in range(typedata.output_data.size()):
 			output.data.push_back(NodeData.new(""))
+		ret.outputs.push_back(output)
 	return ret
 
 # Add a single (ONLY ONE) output to this node.

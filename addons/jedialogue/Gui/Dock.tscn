@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/jedialogue/Dock.gd" type="Script" id=1]
-[ext_resource path="res://addons/jedialogue/GraphEdit.gd" type="Script" id=2]
+[ext_resource path="res://addons/jedialogue/Gui/GraphEdit.gd" type="Script" id=1]
+[ext_resource path="res://addons/jedialogue/Gui/Dock.gd" type="Script" id=2]
+[ext_resource path="res://addons/jedialogue/Gui/CreateNodeDialogue.tscn" type="PackedScene" id=3]
 
 [node name="Dock" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 64 )
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -60,62 +61,12 @@ __meta__ = {
 [node name="GraphEdit" type="GraphEdit" parent="VBox/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CreateNodeDialogue" type="ConfirmationDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -100.0
-margin_top = -35.0
-margin_right = 100.0
-margin_bottom = 57.0
-window_title = "Create a Node"
-resizable = true
-
-[node name="GridContainer" type="GridContainer" parent="CreateNodeDialogue"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -36.0
-columns = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CreateNodeDialogue/GridContainer"]
-margin_top = 5.0
-margin_right = 36.0
-margin_bottom = 19.0
-text = "name"
-
-[node name="LineEdit" type="LineEdit" parent="CreateNodeDialogue/GridContainer"]
-margin_left = 40.0
-margin_right = 184.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Label2" type="Label" parent="CreateNodeDialogue/GridContainer"]
-margin_top = 31.0
-margin_right = 36.0
-margin_bottom = 45.0
-text = "Type"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="OptionButton" type="OptionButton" parent="CreateNodeDialogue/GridContainer"]
-margin_left = 40.0
-margin_top = 28.0
-margin_right = 184.0
-margin_bottom = 48.0
-size_flags_horizontal = 3
+[node name="CreateNodeDialogue" parent="." instance=ExtResource( 3 )]
 
 [node name="RightClickMenu" type="PopupMenu" parent="."]
 margin_left = 297.32
@@ -127,3 +78,5 @@ items = [ "Create", null, 0, false, false, 0, 0, null, "", false, "Delete", null
 [connection signal="disconnection_request" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_disconnection_request"]
 [connection signal="gui_input" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_gui_input"]
 [connection signal="show_menu" from="VBox/Panel/GraphEdit" to="." method="_on_GraphEdit_show_menu"]
+[connection signal="create_dialogue" from="CreateNodeDialogue" to="." method="_on_CreateNodeDialogue_create_dialogue"]
+[connection signal="id_pressed" from="RightClickMenu" to="." method="_on_RightClickMenu_id_pressed"]

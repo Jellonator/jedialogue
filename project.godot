@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Dialogue Editor"
-run/main_scene="res://addons/jedialogue/Dock.tscn"
+run/main_scene="res://addons/jedialogue/Gui/Dock.tscn"
 config/icon="res://icon.png"
 
 [autoload]

@@ -13,7 +13,7 @@ func get_project() -> JeDialogueProject:
 func get_type() -> JEDialogueNodeType:
 	return get_project().datatypes[self.data.datatype]
 
-const OUTPUT_SCENE := preload("res://addons/jedialogue/GraphNodeOutput.tscn")
+const OUTPUT_SCENE := preload("res://addons/jedialogue/Gui/GraphNodeOutput.tscn")
 
 func get_num_outputs() -> int:
 	return data.outputs.size()

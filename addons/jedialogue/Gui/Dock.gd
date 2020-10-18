@@ -11,6 +11,9 @@ const MENU_FILE_CLOSE := 4
 
 const MENU_EDIT_CREATE := 0
 
+const RIGHTCLICK_MENU_CREATE := 0
+const RIGHTCLICK_MENU_DELETE := 1
+
 var project: JeDialogueProject
 var graph: JEDialogueGraph
 
@@ -27,6 +30,7 @@ func load_project(data: Dictionary):
 		printerr("COULD NOT LOAD PROJECT")
 		return
 	project = newproject
+	node_create_node_dialogue.set_project(project)
 	# Clear graph
 	graph = JEDialogueGraph.new()
 	node_graph.clear_all()
@@ -88,11 +92,29 @@ func _on_menu_file_pressed(id: int):
 		MENU_FILE_CLOSE:
 			pass
 
+func do_edit_create():
+	node_create_node_dialogue.popup_centered()
+
 func _on_menu_edit_pressed(id: int):
 	match id:
 		MENU_EDIT_CREATE:
-			pass
+			do_edit_create()
 
 func _on_GraphEdit_show_menu():
 	var pos := get_local_mouse_position() - Vector2.ONE * 8
 	node_right_click_menu.popup(Rect2(pos, Vector2.ONE))
+
+func _on_RightClickMenu_id_pressed(id):
+	match id:
+		RIGHTCLICK_MENU_CREATE:
+			do_edit_create()
+		RIGHTCLICK_MENU_DELETE:
+			pass
+#			do_edit_delete()
+
+func _on_CreateNodeDialogue_create_dialogue(name, typename):
+	var typedata = project.get_type(typename)
+	var newnode := JEDialogueNode.construct_empty(name, typedata)
+	graph.add_node(newnode)
+	node_graph.add_node(newnode)
+	prints("CREATING", name, typename)

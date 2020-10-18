@@ -1,7 +1,7 @@
 tool
 extends GraphEdit
 
-const SCENE_NODE := preload("res://addons/jedialogue/GraphNode.tscn")
+const SCENE_NODE := preload("res://addons/jedialogue/Gui/GraphNode.tscn")
 
 var nodes := {}
 
@@ -16,16 +16,19 @@ func _ready():
 func get_project() -> JeDialogueProject:
 	return owner.project
 
+func add_node(node_data: JEDialogueNode):
+	var child = SCENE_NODE.instance()
+	child.graph = self
+	prints("CHILD", node_data.name, node_data)
+	add_child(child)
+	child.set_data(node_data)
+	nodes[node_data.name] = child
+
 func load_graph(data: JEDialogueGraph):
 	clear_all()
 	for node_name in data.nodes.keys():
 		var node_data = data.nodes[node_name]
-		var child = SCENE_NODE.instance()
-		child.graph = self
-		prints("CHILD", node_name, node_data)
-		add_child(child)
-		child.set_data(node_data)
-		nodes[node_name] = child
+		add_node(node_data)
 	# handle connections
 	for node in nodes.values():
 		node.init_connections()

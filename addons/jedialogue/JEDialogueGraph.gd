@@ -5,6 +5,15 @@ var nodes: Dictionary#[JEDialogueNode]
 
 func _init():
 	nodes = {}
+	
+func get_node(name: String) -> JEDialogueNode:
+	return nodes[name]
+
+func has_node(name: String) -> bool:
+	return name in nodes
+
+func add_node(node: JEDialogueNode):
+	nodes[node.name] = node
 
 static func deserialize(data: Dictionary) -> JEDialogueGraph:
 	var ret = load("res://addons/jedialogue/JEDialogueGraph.gd").new()

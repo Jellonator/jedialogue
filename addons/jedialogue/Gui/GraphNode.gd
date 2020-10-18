@@ -81,12 +81,11 @@ func can_remove_outputs():
 	return get_num_outputs() > get_output_basis()
 
 func set_data(p_data: JEDialogueNode):
-	prints("SET DATA", p_data)
 	data = p_data
 	var typedata := get_type()
 	self.name = data.name
 	self.title = data.name + ": " + get_type().name
-	self.rect_position = data.position
+	self.offset = data.position
 	self.rect_size = data.size
 	for i in p_data.data.size():
 		var typeinfo := typedata.get_data_type_info(i)

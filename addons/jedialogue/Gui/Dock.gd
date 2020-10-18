@@ -92,12 +92,15 @@ func _on_menu_file_pressed(id: int):
 		MENU_FILE_CLOSE:
 			pass
 
+var create_position := Vector2.ZERO
 func do_edit_create():
 	node_create_node_dialogue.popup_centered()
 
 func _on_menu_edit_pressed(id: int):
 	match id:
 		MENU_EDIT_CREATE:
+			var scrollpos = node_graph.scroll_offset / node_graph.zoom
+			create_position = scrollpos + (node_graph.rect_size / node_graph.zoom) / 2.0
 			do_edit_create()
 
 func _on_GraphEdit_show_menu():
@@ -107,6 +110,8 @@ func _on_GraphEdit_show_menu():
 func _on_RightClickMenu_id_pressed(id):
 	match id:
 		RIGHTCLICK_MENU_CREATE:
+			var scrollpos = node_graph.scroll_offset / node_graph.zoom
+			create_position = node_graph.get_local_mouse_position() / node_graph.zoom + scrollpos
 			do_edit_create()
 		RIGHTCLICK_MENU_DELETE:
 			pass
@@ -115,6 +120,7 @@ func _on_RightClickMenu_id_pressed(id):
 func _on_CreateNodeDialogue_create_dialogue(name, typename):
 	var typedata = project.get_type(typename)
 	var newnode := JEDialogueNode.construct_empty(name, typedata)
+	newnode.position = create_position - Vector2.ONE * 8
 	graph.add_node(newnode)
 	node_graph.add_node(newnode)
-	prints("CREATING", name, typename)
+	prints("CREATING", name, typename, create_position)

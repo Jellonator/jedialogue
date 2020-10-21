@@ -22,6 +22,12 @@ static func deserialize(data: Dictionary) -> JEDialogueGraph:
 		ret.nodes[name] = JEDialogueNode.deserialize(name, value)
 	return ret
 
+func serialize() -> Dictionary:
+	var ret := {}
+	for name in nodes.keys():
+		ret[name] = nodes[name].serialize()
+	return ret
+
 func verify(project: JeDialogueProject) -> bool:
 	var ret := true
 	for name in nodes:

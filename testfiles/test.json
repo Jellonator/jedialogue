@@ -1,0 +1,114 @@
+{
+	"A": {
+		"data": [
+			{
+				"value": "Hello, World!"
+			}
+		],
+		"height": 128,
+		"outputs": [
+			{
+				"data": [
+					{
+						"value": "Continue..."
+					}
+				],
+				"node_name": "B"
+			}
+		],
+		"type": "option",
+		"width": 128,
+		"x": 180,
+		"y": -60
+	},
+	"B": {
+		"data": [
+			{
+				"value": "Pick an option"
+			}
+		],
+		"height": 128,
+		"outputs": [
+			{
+				"data": [
+					{
+						"value": "Yes"
+					}
+				],
+				"node_name": "D"
+			},
+			{
+				"data": [
+					{
+						"value": "No"
+					}
+				],
+				"node_name": "C"
+			}
+		],
+		"type": "option",
+		"width": 128,
+		"x": 380,
+		"y": 20
+	},
+	"C": {
+		"data": [
+			{
+				"value": "You picked No!"
+			}
+		],
+		"height": 128,
+		"outputs": [
+			{
+				"data": [
+					{
+						"value": "Continue..."
+					}
+				],
+				"node_name": "FINISH"
+			}
+		],
+		"type": "option",
+		"width": 128,
+		"x": 600,
+		"y": 200
+	},
+	"D": {
+		"data": [
+			{
+				"value": "You picked yes!"
+			},
+			{
+				"value": "Enter something:"
+			}
+		],
+		"height": 128,
+		"outputs": [
+			{
+				"data": [
+					{
+						"value": "Confirm"
+					}
+				],
+				"node_name": "FINISH"
+			}
+		],
+		"type": "entry",
+		"width": 128,
+		"x": 600,
+		"y": 0
+	},
+	"FINISH": {
+		"data": [
+
+		],
+		"height": 128,
+		"outputs": [
+
+		],
+		"type": "finish",
+		"width": 128,
+		"x": 860,
+		"y": 200
+	}
+}

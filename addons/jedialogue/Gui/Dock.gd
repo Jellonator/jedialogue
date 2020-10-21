@@ -136,11 +136,15 @@ func _on_ProjectOpenDialog_file_selected(path: String):
 	var project_data = JSON.parse(project_file.get_as_text()).result
 	load_project(project_data)
 
-func _on_FileOpenDialog_file_selected(path):
+func _on_FileOpenDialog_file_selected(path: String):
 	var graph_file := File.new()
 	graph_file.open(path, File.READ)
 	var graph_data = JSON.parse(graph_file.get_as_text()).result
 	load_file(graph_data)
 
-func _on_FileSaveDialog_file_selected(path):
-	pass # Replace with function body.
+func _on_FileSaveDialog_file_selected(path: String):
+	var data := graph.serialize()
+	var json := JSON.print(data, "\t", true)
+	var fh := File.new()
+	var err = fh.open(path, File.WRITE)
+	fh.store_string(json)

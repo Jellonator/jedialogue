@@ -15,6 +15,9 @@ func has_node(name: String) -> bool:
 func add_node(node: JEDialogueNode):
 	nodes[node.name] = node
 
+func remove_node(name: String):
+	nodes.erase(name)
+
 static func deserialize(data: Dictionary) -> JEDialogueGraph:
 	var ret = load("res://addons/jedialogue/JEDialogueGraph.gd").new()
 	for name in data.keys():

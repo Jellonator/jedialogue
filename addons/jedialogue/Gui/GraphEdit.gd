@@ -41,6 +41,7 @@ func clear_all():
 	for child in nodes.values():
 		child.queue_free()
 	nodes.clear()
+	selected_nodes.clear()
 
 func _on_GraphEdit_connection_request(from: String, from_slot: int, to: String, to_slot: int):
 	# remove existing connection(s)
@@ -60,3 +61,34 @@ func _on_GraphEdit_gui_input(event: InputEvent):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_RIGHT and event.pressed:
 			emit_signal("show_menu")
+
+var selected_nodes := []
+func get_selected_nodes() -> Array:
+	return selected_nodes
+
+func _on_GraphEdit_node_selected(node):
+	selected_nodes.append(node)
+	prints("SELECT", node)
+
+func _on_GraphEdit_node_unselected(node):
+	selected_nodes.erase(node)
+	prints("DESELECT", node)
+
+func remove_all_connections_for_node(node: GraphNode):
+	for connection in get_connection_list():
+		if connection["from"] == node.name or connection["to"] == node.name:
+			disconnect_node(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+			nodes[connection["from"]].set_connection(connection["from_port"], "")
+
+func delete_node(node: GraphNode):
+	prints("DELETING", node.name)
+	remove_all_connections_for_node(node)
+	node.queue_free()
+	nodes.erase(node.name)
+	owner.delete_node(node.name)
+	_on_GraphEdit_node_unselected(node)
+
+func _on_GraphEdit_delete_nodes_request():
+#	prints("DELETE:", selected_nodes)
+	for node in selected_nodes.duplicate(false):
+		delete_node(node)

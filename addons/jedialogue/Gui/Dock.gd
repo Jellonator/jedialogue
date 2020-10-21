@@ -28,6 +28,9 @@ onready var node_project_open_dialog := $ProjectOpenDialog as FileDialog
 onready var node_file_open_dialog := $FileOpenDialog as FileDialog
 onready var node_file_save_dialog := $FileSaveDialog as FileDialog
 
+func delete_node(name: String):
+	graph.remove_node(name)
+
 func is_name_taken(name: String):
 	return node_graph.is_name_taken(name)
 
@@ -121,6 +124,9 @@ func _on_GraphEdit_show_menu():
 	var pos := get_local_mouse_position() - Vector2.ONE * 8
 	node_right_click_menu.popup(Rect2(pos, Vector2.ONE))
 
+func do_edit_delete():
+	node_graph._on_GraphEdit_delete_nodes_request()
+
 func _on_RightClickMenu_id_pressed(id):
 	match id:
 		RIGHTCLICK_MENU_CREATE:
@@ -128,8 +134,7 @@ func _on_RightClickMenu_id_pressed(id):
 			create_position = node_graph.get_local_mouse_position() / node_graph.zoom + scrollpos
 			do_edit_create()
 		RIGHTCLICK_MENU_DELETE:
-			pass
-#			do_edit_delete()
+			do_edit_delete()
 
 func _on_CreateNodeDialogue_create_dialogue(name, typename):
 	var typedata = project.get_type(typename)

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/jedialogue/Gui/GraphEdit.gd" type="Script" id=1]
 [ext_resource path="res://addons/jedialogue/Gui/Dock.gd" type="Script" id=2]
 [ext_resource path="res://addons/jedialogue/Gui/CreateNodeDialogue.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/jedialogue/Gui/RenameNodeDialog.tscn" type="PackedScene" id=4]
 
 [node name="Dock" type="Control"]
 anchor_right = 1.0
@@ -68,6 +69,8 @@ __meta__ = {
 
 [node name="CreateNodeDialog" parent="." instance=ExtResource( 3 )]
 
+[node name="RenameNodeDialog" parent="." instance=ExtResource( 4 )]
+
 [node name="RightClickMenu" type="PopupMenu" parent="."]
 margin_left = 297.32
 margin_top = 225.586
@@ -77,7 +80,7 @@ items = [ "Create", null, 0, false, false, 0, 0, null, "", false, "Delete", null
 
 [node name="ProjectOpenDialog" type="FileDialog" parent="."]
 margin_right = 315.0
-margin_bottom = 130.0
+margin_bottom = 255.0
 popup_exclusive = true
 window_title = "Open a Project"
 resizable = true
@@ -90,7 +93,7 @@ current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
 
 [node name="FileOpenDialog" type="FileDialog" parent="."]
 margin_right = 315.0
-margin_bottom = 130.0
+margin_bottom = 262.0
 popup_exclusive = true
 window_title = "Open a File"
 resizable = true
@@ -102,8 +105,8 @@ current_dir = "/home/jellonator/Workspace/RealWork/DialogueEditor"
 current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
 
 [node name="FileSaveDialog" type="FileDialog" parent="."]
-margin_right = 315.0
-margin_bottom = 130.0
+margin_right = 386.0
+margin_bottom = 271.0
 popup_exclusive = true
 resizable = true
 mode_overrides_title = false
@@ -119,6 +122,7 @@ current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
 [connection signal="popup_request" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_popup_request"]
 [connection signal="show_menu" from="VBox/Panel/GraphEdit" to="." method="_on_GraphEdit_show_menu"]
 [connection signal="create_dialogue" from="CreateNodeDialog" to="." method="_on_CreateNodeDialogue_create_dialogue"]
+[connection signal="rename_node" from="RenameNodeDialog" to="." method="_on_RenameNodeDialog_rename_node"]
 [connection signal="id_pressed" from="RightClickMenu" to="." method="_on_RightClickMenu_id_pressed"]
 [connection signal="file_selected" from="ProjectOpenDialog" to="." method="_on_ProjectOpenDialog_file_selected"]
 [connection signal="file_selected" from="FileOpenDialog" to="." method="_on_FileOpenDialog_file_selected"]

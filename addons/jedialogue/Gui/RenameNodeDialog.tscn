@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/jedialogue/Gui/RenameNodeDialog.gd" type="Script" id=1]
+
+[node name="RenameNodeDialog" type="ConfirmationDialog"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -35.0
+margin_right = 100.0
+margin_bottom = 35.0
+popup_exclusive = true
+window_title = "Rename Node"
+resizable = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GridContainer"]
+margin_top = 5.0
+margin_right = 36.0
+margin_bottom = 19.0
+text = "name"
+
+[node name="Name" type="LineEdit" parent="GridContainer"]
+margin_left = 40.0
+margin_right = 184.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+[connection signal="about_to_show" from="." to="." method="_on_CreateNodeDialogue_about_to_show"]
+[connection signal="confirmed" from="." to="." method="_on_CreateNodeDialogue_confirmed"]
+[connection signal="text_changed" from="GridContainer/Name" to="." method="_on_Name_text_changed"]

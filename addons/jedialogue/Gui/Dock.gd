@@ -27,6 +27,7 @@ onready var node_menu_file := $VBox/HBox/MenuFile as MenuButton
 onready var node_menu_edit := $VBox/HBox/MenuEdit as MenuButton
 onready var node_right_click_menu := $RightClickMenu as PopupMenu
 onready var node_create_node_dialogue := $CreateNodeDialog as ConfirmationDialog
+onready var node_rename_node_dialog := $RenameNodeDialog as ConfirmationDialog
 onready var node_project_open_dialog := $ProjectOpenDialog as FileDialog
 onready var node_file_open_dialog := $FileOpenDialog as FileDialog
 onready var node_file_save_dialog := $FileSaveDialog as FileDialog
@@ -74,11 +75,14 @@ func update_buttons():
 	node_menu_edit.disabled = project == null
 	node_right_click_menu.set_item_disabled(RIGHTCLICK_MENU_CREATE, project == null)
 	node_right_click_menu.set_item_disabled(RIGHTCLICK_MENU_DELETE, project == null)
+	var num = node_graph.get_selected_nodes().size()
+	node_right_click_menu.set_item_disabled(RIGHTCLICK_MENU_RENAME, num != 1)
 
 func _ready():
 	if not Engine.editor_hint:
 		initialize()
 
+# Initialize the editor
 func initialize():
 	node_menu_project.get_popup().connect("id_pressed", self, "_on_menu_project_pressed")
 	node_menu_file.get_popup().connect("id_pressed", self, "_on_menu_file_pressed")
@@ -136,6 +140,10 @@ func _on_GraphEdit_show_menu():
 func do_edit_delete():
 	node_graph._on_GraphEdit_delete_nodes_request()
 
+func do_edit_rename():
+	node_rename_node_dialog.set_target_node(node_graph.selected_nodes[0].name)
+	node_rename_node_dialog.popup_centered()
+
 func _on_RightClickMenu_id_pressed(id):
 	match id:
 		RIGHTCLICK_MENU_CREATE:
@@ -144,6 +152,8 @@ func _on_RightClickMenu_id_pressed(id):
 			do_edit_create()
 		RIGHTCLICK_MENU_DELETE:
 			do_edit_delete()
+		RIGHTCLICK_MENU_RENAME:
+			do_edit_rename()
 
 func _on_CreateNodeDialogue_create_dialogue(name, typename):
 	var typedata = project.get_type(typename)
@@ -170,3 +180,8 @@ func _on_FileSaveDialog_file_selected(path: String):
 	var fh := File.new()
 	var err = fh.open(path, File.WRITE)
 	fh.store_string(json)
+
+func _on_RenameNodeDialog_rename_node(from: String, value: String):
+	if graph.has_node(from):
+		graph.rename_node(from, value)
+	node_graph.rename_node(from, value)

@@ -18,6 +18,21 @@ func add_node(node: JEDialogueNode):
 func remove_node(name: String):
 	nodes.erase(name)
 
+func rename_node(from: String, value: String):
+	# Remove node
+	var node := get_node(from)
+	remove_node(from)
+	# Manage connections of other nodes
+	for name in nodes:
+		var other := get_node(name)
+		for i in range(other.get_num_outputs()):
+			var output := other.get_output(i)
+			if output.node_name == from:
+				output.node_name = value
+	# Add node back in
+	node.name = value
+	add_node(node)
+
 static func deserialize(data: Dictionary) -> JEDialogueGraph:
 	var ret = load("res://addons/jedialogue/JEDialogueGraph.gd").new()
 	for name in data.keys():

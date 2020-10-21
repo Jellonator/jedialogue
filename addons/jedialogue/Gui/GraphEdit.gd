@@ -10,6 +10,28 @@ var selected_nodes := []
 # Signal that is emitted when the user right clicks
 signal show_menu()
 
+func rename_node(from: String, value: String):
+	# Remove connections
+	var ls := []
+	for connection in get_connection_list():
+		connection = connection.duplicate() # juuuuuust in case
+		if connection["from"] == from:
+			disconnect_node(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+			connection["from"] = value
+			ls.append(connection)
+		elif connection["to"] == from:
+			disconnect_node(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+			connection["to"] = value
+			ls.append(connection)
+	# Rename node
+	var node = nodes[from]
+	nodes.erase(from)
+	nodes[value] = node
+	node.rename(value)
+	# Re-add connections
+	for connection in ls:
+		connect_node(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+
 # Returns true if the given name is already used by an existing node
 func is_name_taken(name: String):
 	return name in nodes
@@ -34,6 +56,7 @@ func add_node(node_data: JEDialogueNode):
 # Load an entirely new graph
 func load_graph(data: JEDialogueGraph):
 	clear_all()
+	yield(get_tree(), "idle_frame")
 	for node_name in data.nodes.keys():
 		var node_data = data.nodes[node_name]
 		add_node(node_data)
@@ -81,11 +104,13 @@ func _on_GraphEdit_node_selected(node):
 		return
 	selected_nodes.append(node)
 	prints("SELECT", node)
+	owner.update_buttons()
 
 func _on_GraphEdit_node_unselected(node):
 	if node in selected_nodes:
 		selected_nodes.erase(node)
 		prints("DESELECT", node)
+		owner.update_buttons()
 
 func _on_GraphEdit_connection_request(from: String, from_slot: int, to: String, to_slot: int):
 	# remove existing connection(s)

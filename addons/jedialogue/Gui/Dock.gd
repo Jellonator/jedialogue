@@ -22,7 +22,7 @@ onready var node_menu_project := $VBox/HBox/MenuProject as MenuButton
 onready var node_menu_file := $VBox/HBox/MenuFile as MenuButton
 onready var node_menu_edit := $VBox/HBox/MenuEdit as MenuButton
 onready var node_right_click_menu := $RightClickMenu as PopupMenu
-onready var node_create_node_dialogue := $CreateNodeDialogue as ConfirmationDialog
+onready var node_create_node_dialogue := $CreateNodeDialog as ConfirmationDialog
 onready var node_project_open_dialog := $ProjectOpenDialog as FileDialog
 onready var node_file_open_dialog := $FileOpenDialog as FileDialog
 onready var node_file_save_dialog := $FileSaveDialog as FileDialog
@@ -37,6 +37,7 @@ func load_project(data: Dictionary):
 	# Clear graph
 	graph = JEDialogueGraph.new()
 	node_graph.clear_all()
+	update_buttons()
 
 func load_file(data: Dictionary):
 	var newfile := JEDialogueGraph.deserialize(data)
@@ -45,6 +46,13 @@ func load_file(data: Dictionary):
 		return
 	graph = newfile
 	node_graph.load_graph(graph)
+	update_buttons()
+
+func update_buttons():
+	node_menu_file.disabled = project == null
+	node_menu_edit.disabled = project == null
+	node_right_click_menu.set_item_disabled(RIGHTCLICK_MENU_CREATE, project == null)
+	node_right_click_menu.set_item_disabled(RIGHTCLICK_MENU_DELETE, project == null)
 
 func _ready():
 	if not Engine.editor_hint:
@@ -54,21 +62,15 @@ func initialize():
 	node_menu_project.get_popup().connect("id_pressed", self, "_on_menu_project_pressed")
 	node_menu_file.get_popup().connect("id_pressed", self, "_on_menu_file_pressed")
 	node_menu_edit.get_popup().connect("id_pressed", self, "_on_menu_edit_pressed")
-	print("LOADING PROJECT")
-	var project_file := File.new()
-	project_file.open("/home/jellonator/Workspace/RealWork/Haru/haruweb/src/projectdata.json", File.READ)
-	var project_data = JSON.parse(project_file.get_as_text()).result
-	load_project(project_data)
-	print("LOADING GRAPH")
-	var graph_file := File.new()
-	graph_file.open("/home/jellonator/Workspace/RealWork/Haru/haruweb/src/game.json", File.READ)
-	var graph_data = JSON.parse(graph_file.get_as_text()).result
-	load_file(graph_data)
+	update_buttons()
+
+func do_project_open():
+	node_project_open_dialog.popup_centered()
 
 func _on_menu_project_pressed(id: int):
 	match id:
 		MENU_PROJECT_OPEN:
-			pass
+			do_project_open()
 		_:
 			pass
 
@@ -77,10 +79,10 @@ func do_file_new():
 	node_graph.clear_all()
 
 func do_file_open():
-	pass
+	node_file_open_dialog.popup_centered()
 
 func do_file_save_as():
-	pass
+	node_file_save_dialog.popup_centered()
 
 func _on_menu_file_pressed(id: int):
 	match id:
@@ -127,3 +129,18 @@ func _on_CreateNodeDialogue_create_dialogue(name, typename):
 	graph.add_node(newnode)
 	node_graph.add_node(newnode)
 	prints("CREATING", name, typename, create_position)
+
+func _on_ProjectOpenDialog_file_selected(path: String):
+	var project_file := File.new()
+	project_file.open(path, File.READ)
+	var project_data = JSON.parse(project_file.get_as_text()).result
+	load_project(project_data)
+
+func _on_FileOpenDialog_file_selected(path):
+	var graph_file := File.new()
+	graph_file.open(path, File.READ)
+	var graph_data = JSON.parse(graph_file.get_as_text()).result
+	load_file(graph_data)
+
+func _on_FileSaveDialog_file_selected(path):
+	pass # Replace with function body.

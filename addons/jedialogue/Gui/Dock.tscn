@@ -66,7 +66,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CreateNodeDialogue" parent="." instance=ExtResource( 3 )]
+[node name="CreateNodeDialog" parent="." instance=ExtResource( 3 )]
 
 [node name="RightClickMenu" type="PopupMenu" parent="."]
 margin_left = 297.32
@@ -115,5 +115,8 @@ current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
 [connection signal="disconnection_request" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_disconnection_request"]
 [connection signal="gui_input" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_gui_input"]
 [connection signal="show_menu" from="VBox/Panel/GraphEdit" to="." method="_on_GraphEdit_show_menu"]
-[connection signal="create_dialogue" from="CreateNodeDialogue" to="." method="_on_CreateNodeDialogue_create_dialogue"]
+[connection signal="create_dialogue" from="CreateNodeDialog" to="." method="_on_CreateNodeDialogue_create_dialogue"]
 [connection signal="id_pressed" from="RightClickMenu" to="." method="_on_RightClickMenu_id_pressed"]
+[connection signal="file_selected" from="ProjectOpenDialog" to="." method="_on_ProjectOpenDialog_file_selected"]
+[connection signal="file_selected" from="FileOpenDialog" to="." method="_on_FileOpenDialog_file_selected"]
+[connection signal="file_selected" from="FileSaveDialog" to="." method="_on_FileSaveDialog_file_selected"]

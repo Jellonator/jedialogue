@@ -73,7 +73,7 @@ margin_left = 297.32
 margin_top = 225.586
 margin_right = 317.32
 margin_bottom = 245.586
-items = [ "Create", null, 0, false, false, 0, 0, null, "", false, "Delete", null, 0, false, false, 1, 0, null, "", false ]
+items = [ "Create", null, 0, false, false, 0, 0, null, "", false, "Delete", null, 0, false, false, 1, 0, null, "", false, "Rename", null, 0, false, false, 2, 0, null, "", false ]
 
 [node name="ProjectOpenDialog" type="FileDialog" parent="."]
 margin_right = 315.0

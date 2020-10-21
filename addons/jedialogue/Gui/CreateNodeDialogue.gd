@@ -17,3 +17,12 @@ func set_project(p_project: JeDialogueProject):
 func _on_CreateNodeDialogue_confirmed():
 	var typename = node_type.get_item_metadata(node_type.selected)
 	emit_signal("create_dialogue", node_name.text, typename)
+
+func update_button():
+	get_ok().disabled = not owner.is_valid_name(node_name.text)
+
+func _on_Name_text_changed(_new_text):
+	update_button()
+
+func _on_CreateNodeDialogue_about_to_show():
+	update_button()

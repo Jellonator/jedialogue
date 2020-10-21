@@ -7,6 +7,9 @@ var nodes := {}
 
 signal show_menu()
 
+func is_name_taken(name: String):
+	return name in nodes
+
 func _ready():
 	print("BEGIN")
 	add_valid_connection_type(0, 0)

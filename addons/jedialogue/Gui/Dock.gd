@@ -13,6 +13,7 @@ const MENU_EDIT_CREATE := 0
 
 const RIGHTCLICK_MENU_CREATE := 0
 const RIGHTCLICK_MENU_DELETE := 1
+const RIGHTCLICK_MENU_RENAME := 2
 
 var project: JeDialogueProject
 var graph: JEDialogueGraph
@@ -26,6 +27,14 @@ onready var node_create_node_dialogue := $CreateNodeDialog as ConfirmationDialog
 onready var node_project_open_dialog := $ProjectOpenDialog as FileDialog
 onready var node_file_open_dialog := $FileOpenDialog as FileDialog
 onready var node_file_save_dialog := $FileSaveDialog as FileDialog
+
+func is_name_taken(name: String):
+	return node_graph.is_name_taken(name)
+
+func is_valid_name(name: String) -> bool:
+	if name == "":
+		return false
+	return not is_name_taken(name)
 
 func load_project(data: Dictionary):
 	var newproject := JeDialogueProject.deserialize(data)

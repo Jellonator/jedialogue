@@ -1,21 +1,24 @@
 tool
 extends Control
 
+# Project menu IDs
 const MENU_PROJECT_OPEN := 0
-
+# File menu IDs
 const MENU_FILE_NEW := 0
 const MENU_FILE_OPEN := 1
 const MENU_FILE_SAVE := 2
 const MENU_FILE_SAVE_AS := 3
 const MENU_FILE_CLOSE := 4
-
+# Edit menu IDs
 const MENU_EDIT_CREATE := 0
-
+# Right click menu IDs
 const RIGHTCLICK_MENU_CREATE := 0
 const RIGHTCLICK_MENU_DELETE := 1
 const RIGHTCLICK_MENU_RENAME := 2
 
+# The current project. May be null
 var project: JeDialogueProject
+# The current graph. Is null if project is null
 var graph: JEDialogueGraph
 
 onready var node_graph := $VBox/Panel/GraphEdit as GraphEdit
@@ -28,17 +31,21 @@ onready var node_project_open_dialog := $ProjectOpenDialog as FileDialog
 onready var node_file_open_dialog := $FileOpenDialog as FileDialog
 onready var node_file_save_dialog := $FileSaveDialog as FileDialog
 
+# deletes a node from the graph's data
 func delete_node(name: String):
 	graph.remove_node(name)
 
+# Returns true if the name is already being used
 func is_name_taken(name: String):
 	return node_graph.is_name_taken(name)
 
+# Returns true if the given string is a valid node name
 func is_valid_name(name: String) -> bool:
 	if name == "":
 		return false
 	return not is_name_taken(name)
 
+# Load a project from a JSON Dictionary value
 func load_project(data: Dictionary):
 	var newproject := JeDialogueProject.deserialize(data)
 	if newproject == null:
@@ -51,6 +58,7 @@ func load_project(data: Dictionary):
 	node_graph.clear_all()
 	update_buttons()
 
+# Load a file from a JSON Dictionary value
 func load_file(data: Dictionary):
 	var newfile := JEDialogueGraph.deserialize(data)
 	if newfile == null:
@@ -60,6 +68,7 @@ func load_file(data: Dictionary):
 	node_graph.load_graph(graph)
 	update_buttons()
 
+# Update the buttons to reflect project state
 func update_buttons():
 	node_menu_file.disabled = project == null
 	node_menu_edit.disabled = project == null
@@ -142,7 +151,6 @@ func _on_CreateNodeDialogue_create_dialogue(name, typename):
 	newnode.position = create_position - Vector2.ONE * 8
 	graph.add_node(newnode)
 	node_graph.add_node(newnode)
-	prints("CREATING", name, typename, create_position)
 
 func _on_ProjectOpenDialog_file_selected(path: String):
 	var project_file := File.new()

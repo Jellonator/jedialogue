@@ -23,6 +23,9 @@ onready var node_menu_file := $VBox/HBox/MenuFile as MenuButton
 onready var node_menu_edit := $VBox/HBox/MenuEdit as MenuButton
 onready var node_right_click_menu := $RightClickMenu as PopupMenu
 onready var node_create_node_dialogue := $CreateNodeDialogue as ConfirmationDialog
+onready var node_project_open_dialog := $ProjectOpenDialog as FileDialog
+onready var node_file_open_dialog := $FileOpenDialog as FileDialog
+onready var node_file_save_dialog := $FileSaveDialog as FileDialog
 
 func load_project(data: Dictionary):
 	var newproject := JeDialogueProject.deserialize(data)

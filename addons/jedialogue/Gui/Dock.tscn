@@ -74,6 +74,43 @@ margin_top = 225.586
 margin_right = 317.32
 margin_bottom = 245.586
 items = [ "Create", null, 0, false, false, 0, 0, null, "", false, "Delete", null, 0, false, false, 1, 0, null, "", false ]
+
+[node name="ProjectOpenDialog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+popup_exclusive = true
+window_title = "Open a Project"
+resizable = true
+mode_overrides_title = false
+mode = 0
+access = 2
+filters = PoolStringArray( "*.json ; JSON files" )
+current_dir = "/home/jellonator/Workspace/RealWork/DialogueEditor"
+current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
+
+[node name="FileOpenDialog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+popup_exclusive = true
+window_title = "Open a File"
+resizable = true
+mode_overrides_title = false
+mode = 0
+access = 2
+filters = PoolStringArray( "*.json ; JSON files" )
+current_dir = "/home/jellonator/Workspace/RealWork/DialogueEditor"
+current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
+
+[node name="FileSaveDialog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+popup_exclusive = true
+resizable = true
+mode_overrides_title = false
+access = 2
+filters = PoolStringArray( "*.json ; JSON files" )
+current_dir = "/home/jellonator/Workspace/RealWork/DialogueEditor"
+current_path = "/home/jellonator/Workspace/RealWork/DialogueEditor/"
 [connection signal="connection_request" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_connection_request"]
 [connection signal="disconnection_request" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_disconnection_request"]
 [connection signal="gui_input" from="VBox/Panel/GraphEdit" to="VBox/Panel/GraphEdit" method="_on_GraphEdit_gui_input"]

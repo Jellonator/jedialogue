@@ -52,7 +52,7 @@ func push_output() -> Control:
 		var editor := JeDialogueTypeServer.instance_editor(typeinfo.typename)
 		scene.add_data(typeinfo.name, editor)
 		editor.set_type_value(data.get_output(output_index).get_data(i).value)
-		editor.connect("on_type_value_changed", self, "_on_data_value_set", [
+		editor.connect("on_type_value_changed", self, "_on_output_value_set", [
 			output_index, i])
 	return scene
 

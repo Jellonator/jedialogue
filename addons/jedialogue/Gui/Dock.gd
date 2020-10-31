@@ -53,6 +53,7 @@ func load_project(data: Dictionary):
 		printerr("COULD NOT LOAD PROJECT")
 		return
 	project = newproject
+	print("METHOD ", node_create_node_dialogue.has_method("set_project"))
 	node_create_node_dialogue.set_project(project)
 	# Clear graph
 	graph = JEDialogueGraph.new()

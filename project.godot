@@ -46,6 +46,10 @@ config/icon="res://icon.png"
 
 JeDialogueTypeServer="*res://addons/jedialogue/JEDialogueTypeServer.gd"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "jedialogue" )
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
